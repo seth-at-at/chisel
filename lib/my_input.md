@@ -8,11 +8,8 @@
 My favorite cuisines are:
 
 * Sushi
-
 * Barbeque
-
 * Mexican
-
 
 My favorite cuisines are:
 

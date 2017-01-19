@@ -14,17 +14,19 @@ class Parser
       line = convert_emphasize(line)
       replace_special_characters(line)
     end
-   final = final_html.join("\n\n")
+   final = final_html.join("\n")
    final
   end
 
   def turn_into_array(incoming_text)
-    incoming_text.split("\n\n")
+    incoming_text.split("\n")
   end
 
   def convert_line_breaks(incoming_text)
     line_as_arr = incoming_text.split(" ")
     case line_as_arr[0]
+      when nil
+        ""
       when "#"
         convert_header(line_as_arr, "h1")
       when "##"
@@ -57,7 +59,7 @@ class Parser
 
   def convert_paragraph(line)
     line.delete_at(0)
-    "<p>\n\n#{line.join(" ")}\n\n</p>\n\n"
+    "<p>\n#{line.join(" ")}\n</p>\n"
   end
 
   def convert_emphasize(line)
