@@ -43,7 +43,6 @@ class Parser
         ul_arr << convert_ul(line_as_arr)
         "<ul>\n\n" + ul_arr.join.delete("\"") + "\n\n</ul>\n\n"
       when "1.", "2.", "3.", "4.", "5.", "6.", "7.", "8.", "9.", "10."
-        # "<ol>\n#{convert_ol(line_as_arr)}\n</ol>"
         ul_arr = []
         ul_arr << convert_ul(line_as_arr)
         "<ol>\n\n" + ul_arr.join.to_s.delete("\"") + "\n\n</ol>\n\n"
