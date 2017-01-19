@@ -42,7 +42,7 @@ class Parser
       when "*"
         ul_arr = []
         ul_arr << convert_list(line_as_arr)
-        "<ul>\n\n" + ul_arr.join.delete("\"").delete("\[").delete("\]") + "\n\n</ul>\n\n"
+       "<ul>\n\n" + ul_arr.join.delete("\"").delete("\[").delete("\]") + "\n\n</ul>\n\n"
       when "1.", "2.", "3.", "4.", "5.", "6.", "7.", "8.", "9.", "10."
         ul_arr = []
         ul_arr << convert_list(line_as_arr)
@@ -50,6 +50,10 @@ class Parser
       else 
         convert_paragraph(line_as_arr)
     end
+  end
+
+  def cul
+
   end
 
   def convert_header(line, header)
