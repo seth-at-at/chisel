@@ -53,9 +53,11 @@ class ParserTest < Minitest::Test
   end
 
   def test_can_make_parse_an_ordered_list
+    skip
     parser_1 = @parse.convert_line_breaks("* Sushi")
-
-    assert_equal "<ul>\n<li>Sushi</li>\n</ul>\n", parser_1
+    parser_2 = @parse.convert_line_breaks("* Pizza")
+    assert_equal "<ul>\n<li>Sushi</li>\n</ul>", parser_1
+    assert_equal "<ul>\n<li>Pizza</li>\n</ul>", parser_2
   end
 
   def test_can_replace_special_characters

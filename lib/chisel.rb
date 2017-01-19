@@ -3,7 +3,7 @@ class Parser
 
   def initialize
     @handle = File.open("./lib/my_input.md", 'r')
-
+    # @handle = File.open(ARGV[0], 'r')
   end
 
   def incoming_text
@@ -13,11 +13,12 @@ class Parser
   def convert_to_html(incoming_text)
     arr = turn_into_array(incoming_text)
     final_html = arr.map do |line|
-      a = convert_line_breaks(line)
-      b = convert_emphasize(a)
-      replace_special_characters(b)
+      line = convert_line_breaks(line)
+      line = convert_emphasize(line)
+      replace_special_characters(line)
     end
-    final_html.join("\n\n")
+   final = final_html.join("\n\n")
+   open(ARGV[1], 'w') { |f| f.puts final}
   end
 
   def turn_into_array(incoming_text)
@@ -41,9 +42,9 @@ class Parser
       when "######"
         convert_header(line_as_arr, "h6")
       when "*"
-        convert_ul(line_as_arr)
+        "<ul>\n#{convert_list(line_as_arr)}\n</ul>"
       when "#{number}."
-        convert_ol(line_as_arr)
+        "<ol>\n#{convert_list(line_as_arr)}\n</ol>"
       else 
         convert_paragraph(line_as_arr)
     end
@@ -55,17 +56,17 @@ class Parser
   end
 
   def convert_paragraph(line)
-    "<p>\n#{line.join(" ")}\n</p>\n"
+    "<p> \n#{line.join(" ")} \n</p> \n"
   end
 
   def convert_emphasize(line)
     arr = line.split(" ")
     arr.map do |word|
       if word.include?("**") || word.include?("*")
+        word.gsub!(/[*]{2}\b/, "<strong>")
         word.gsub!(/[*]{2}/, "</strong>")
-        word.gsub!(/<\/strong>\b/, "<strong>")
+        word.gsub!(/[*]{1}\b/, "<em>")
         word.gsub!(/[*]{1}/, "</em>")
-        word.gsub!(/<\/em>\b/, "<em>")
       else
         word
       end
@@ -82,20 +83,12 @@ class Parser
   end
 
   def convert_list(line)
-    # line.slice!(0..1)
-    # line.delete_at(0)
+    line.delete_at(0)
     "<li>#{line.join}</li>\n"
   end
-
-  def convert_ol(line)
-    # line = line.split(" ").delete_at(0)
-    line.delete_at(0)    
-    "<ol>\n#{convert_list(line)}</ol>\n"
-  end
-
-  def convert_ul(line)
-    # line = line.slice!(0..1)
-    line.delete_at(0)    
-    "<ul>\n#{convert_list(line)}</ul>\n"
-  end
+ 
+ parse = Parser.new
+ parse.incoming_text
+ parse.convert_to_html()
+# File.open(ARGV[1], 'w') { |f| f.puts ARGV[0]}
 end
