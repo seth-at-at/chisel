@@ -39,9 +39,14 @@ class Parser
       when "######"
         convert_header(line_as_arr, "h6")
       when "*"
-        "<ul>\n#{convert_list(line_as_arr)}\n</ul>"
-      when "#{number}."
-        "<ol>\n#{convert_list(line_as_arr)}\n</ol>"
+        ul_arr = []
+        ul_arr << convert_ul(line_as_arr)
+        "<ul>\n\n" + ul_arr.join.delete("\"") + "\n\n</ul>\n\n"
+      when "1.", "2.", "3.", "4.", "5.", "6.", "7.", "8.", "9.", "10."
+        # "<ol>\n#{convert_ol(line_as_arr)}\n</ol>"
+        ul_arr = []
+        ul_arr << convert_ul(line_as_arr)
+        "<ol>\n\n" + ul_arr.join.to_s.delete("\"") + "\n\n</ol>\n\n"
       else 
         convert_paragraph(line_as_arr)
     end
@@ -53,6 +58,7 @@ class Parser
   end
 
   def convert_paragraph(line)
+    line.delete_at(0)
     "<p>\n\n#{line.join(" ")}\n\n</p>\n\n"
   end
 
@@ -79,9 +85,13 @@ class Parser
     end
   end
 
-  def convert_list(line)
+  def convert_ul(line)
     line.delete_at(0)
-    "<li>#{line.join}</li>\n" + "\n"
+    "<li>#{line}</li>\n"
+  end
+
+  def convert_ol(line)
+    "<li>#{line.join(" ")}</li>\n"
   end
  
   parse = Parser.new
