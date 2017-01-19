@@ -24,7 +24,6 @@ class Parser
 
   def convert_line_breaks(incoming_text)
     line_as_arr = incoming_text.split(" ")
-    number = (1...100)
     case line_as_arr[0]
       when "#"
         convert_header(line_as_arr, "h1")
@@ -40,12 +39,12 @@ class Parser
         convert_header(line_as_arr, "h6")
       when "*"
         ul_arr = []
-        ul_arr << convert_ul(line_as_arr)
-        "<ul>\n\n" + ul_arr.join.delete("\"") + "\n\n</ul>\n\n"
+        ul_arr << convert_list(line_as_arr)
+        "<ul>\n\n" + ul_arr.join.delete("\"").delete("\[").delete("\]") + "\n\n</ul>\n\n"
       when "1.", "2.", "3.", "4.", "5.", "6.", "7.", "8.", "9.", "10."
         ul_arr = []
-        ul_arr << convert_ul(line_as_arr)
-        "<ol>\n\n" + ul_arr.join.to_s.delete("\"") + "\n\n</ol>\n\n"
+        ul_arr << convert_list(line_as_arr)
+        "<ol>\n\n" + ul_arr.join.to_s.delete("\"").delete("\[").delete("\]") + "\n\n</ol>\n\n"
       else 
         convert_paragraph(line_as_arr)
     end
@@ -84,13 +83,9 @@ class Parser
     end
   end
 
-  def convert_ul(line)
+  def convert_list(line)
     line.delete_at(0)
     "<li>#{line}</li>\n"
-  end
-
-  def convert_ol(line)
-    "<li>#{line.join(" ")}</li>\n"
   end
  
   parse = Parser.new

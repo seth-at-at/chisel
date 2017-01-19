@@ -17,7 +17,5 @@ My favorite cuisines are:
 My favorite cuisines are:
 
 1. Sushi
-
 2. Barbeque
-
 3. Mexican
