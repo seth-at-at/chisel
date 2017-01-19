@@ -1,13 +1,10 @@
 class Parser
-  attr_reader :handle
+  attr_reader :handle, :incoming_text
 
   def initialize
-    @handle = File.open("./lib/my_input.md", 'r')
-    # @handle = File.open(ARGV[0], 'r')
-  end
-
-  def incoming_text
-    @handle.read
+    @handle = File.open(ARGV[0], 'r')
+    @incoming_text = @handle.read
+    @handle.close
   end
 
   def convert_to_html(incoming_text)
@@ -18,7 +15,7 @@ class Parser
       replace_special_characters(line)
     end
    final = final_html.join("\n\n")
-   open(ARGV[1], 'w') { |f| f.puts final}
+   final
   end
 
   def turn_into_array(incoming_text)
@@ -56,7 +53,7 @@ class Parser
   end
 
   def convert_paragraph(line)
-    "<p> \n#{line.join(" ")} \n</p> \n"
+    "<p>\n\n#{line.join(" ")}\n\n</p>\n\n"
   end
 
   def convert_emphasize(line)
@@ -84,11 +81,11 @@ class Parser
 
   def convert_list(line)
     line.delete_at(0)
-    "<li>#{line.join}</li>\n"
+    "<li>#{line.join}</li>\n" + "\n"
   end
  
- parse = Parser.new
- parse.incoming_text
- parse.convert_to_html()
-# File.open(ARGV[1], 'w') { |f| f.puts ARGV[0]}
+  parse = Parser.new
+  parse.incoming_text
+  parse.convert_to_html(parse.incoming_text)
+  File.open(ARGV[1], 'w') { |f| f.puts parse.convert_to_html(parse.incoming_text)}
 end
